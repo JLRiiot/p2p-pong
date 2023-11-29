@@ -1,21 +1,33 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
-require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
-});
-
-if (require('electron-squirrel-startup')) return app.quit();
 
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 1000,
     webPreferences: {
       preload: path.join(__dirname, './src/preload.js'),
     },
   });
 
   win.loadFile('public/index.html');
+
+  let watcher;
+  if (process.env.NODE_ENV === 'development') {
+    watcher = require('chokidar').watch(
+      path.join(__dirname, 'public/bundle.js'),
+      { ignoreInitial: true },
+    );
+    watcher.on('change', () => {
+      win.reload();
+    });
+  }
+
+  win.on('closed', () => {
+    if (watcher) {
+      watcher.close();
+    }
+  });
 };
 
 app.on('window-all-closed', () => {

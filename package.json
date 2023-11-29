@@ -5,8 +5,10 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron-forge start",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "run-p dev start-electron",
+    "start-electron": "cross-env NODE_ENV=development electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "make-win": "electron-forge make --platform=win32",
@@ -20,18 +22,30 @@
   "author": "Jose Montana",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-env": "^7.23.3",
     "@electron-forge/cli": "^7.1.0",
     "@electron-forge/maker-deb": "^7.1.0",
     "@electron-forge/maker-rpm": "^7.1.0",
     "@electron-forge/maker-squirrel": "^7.1.0",
     "@electron-forge/maker-zip": "^7.1.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.1.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "chokidar": "^3.5.3",
+    "cross-env": "^7.0.3",
     "electron": "^27.1.2",
     "electron-reload": "^2.0.0-alpha.1",
-    "prettier": "3.1.0"
+    "npm-run-all": "^4.1.5",
+    "prettier": "3.1.0",
+    "rollup": "^2.79.1",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {
+    "@pixi/graphics-extras": "^7.3.2",
+    "@pixi/unsafe-eval": "^7.3.2",
     "electron-squirrel-startup": "^1.0.0",
-    "three": "^0.158.0"
+    "pixi.js": "^7.3.2"
   }
 }
